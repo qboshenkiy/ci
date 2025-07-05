@@ -11,29 +11,46 @@ class TaskController extends BaseController
         $model = new TaskModel();
 
         $data = [
-            'task' => $model->getTask(),
-            'title' => 'All tasks',
+            'task' => $model->findAll(),
         ];
 
-        echo view('layouts/header', $data);
-        echo view('tasks/task', $data);
+        echo view('tasks/tasklist', $data);
     }
 
-    public function taks($slug = NULL)
+    public function task_details($id)
     {
         $model = new TaskModel();
+        $detail = $model->find($id);
 
-        $task = $model->getTask($slug);
-
-        if ($task) {
-            $data['title'] = $task['title'];
-            $data['task'] = $task;
-        } else {
-            $data['title'] = 'Page not found';
-            $data['task']['title'] = 'Page not found';
-            $data['task']['body'] = '404...';
+        if ($detail === null) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Task not found");
         }
-        echo view('tasks/task', $data);
-        echo view('layouts/header', $data);
+
+        $data = [
+            'task' => $model->findAll(),
+            'detail' => $detail,
+        ];
+
+        return view('tasks/detail', $data);
+    }
+
+    public function task_add()
+    {
+        $model = new TaskModel();
+        $data = [
+            'task' => $model->findAll(),
+        ];
+
+        $requests = $model->insert([
+            'title' => $this->request->getPost('title'),
+            'description' => $this->request->getPost('description')
+        ]);
+        if($requests){
+            return view('layouts/default');
+        }
+    }
+    public function form()
+    {
+        return view('tasks/form');
     }
 }

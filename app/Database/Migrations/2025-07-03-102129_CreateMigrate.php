@@ -22,7 +22,7 @@ class CreateMigrate extends Migration
             'description' => [
                 'type' => 'LONGTEXT',
                 'null' => true,
-            ]
+            ],
         ]);
 
         $this->forge->addKey('id', true);

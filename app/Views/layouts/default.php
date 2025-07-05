@@ -10,8 +10,8 @@
 </head>
 
 <body>
-    <?= view("layouts/header") ?>
     <div class="header">
+        <?= view("layouts/header") ?>
     </div>
     <div class="container p20">
         <h1>HELLO</h1>
